@@ -4,6 +4,8 @@ import tensorflow as tf
 import torch
 import torch.nn.functional as F
 
+from .models import RBPNet
+
 
 def _disable_tensorflow_logs():
     # Disable tensorflow INFO and WARNING log messages. This needs to be
@@ -44,7 +46,6 @@ def sequence_to_onehot(sequence, alphabet='ACGT'):
     Returns:
         torch.tensor: One-hot encoding of the sequence.
     """
-
     # Convert sequence to one-hot encoding. We first add an additional dimension for bases not contained in
     # the alphabet. Then, we remove the additional dimension so that the encoding of the unknown bases is a 0-vector.
     alphabet = dict(zip(alphabet, range(len(alphabet))))
@@ -76,7 +77,7 @@ def load_parnet_model_for_prediction(
     device: torch.device,
     dtype: torch.dtype,
     is_old_model: bool = False,
-) -> parnet.models.RBPNet:
+) -> RBPNet:
     """Load a parnet model for prediction."""
     model = torch.load(
         model_weigth_path,
@@ -99,7 +100,7 @@ def load_parnet_model_for_prediction(
 
 
 def print_basic_info_parnet_model(
-    model: parnet.models.RBPNet,
+    model: RBPNet,
     device: torch.device,
     dtype: torch.dtype,
 ) -> None:
@@ -110,7 +111,7 @@ def print_basic_info_parnet_model(
     print(f"Number of trainable parameters: {params:_}")
 
     # Display available keys in output from output heads.
-    tmp_seq = torch.stack([parnet.utils.sequence_to_onehot("A").float()]).to(
+    tmp_seq = torch.stack([sequence_to_onehot("A").float()]).to(
         device=device, dtype=dtype
     )
     print("Available output data: ", model({"sequence": tmp_seq}).keys())
