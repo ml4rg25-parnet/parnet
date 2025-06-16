@@ -19,7 +19,7 @@ from parnet.layers import (
     LikeBasenji2ConvBlock,
 )
 from parnet.layers import StemConv, ResConvBlock, AdditiveMix
-from parnet.constants import IDX_2_EXPERIMENT
+#from parnet.constants import IDX_2_EXPERIMENT
 
 
 @gin.configurable()
