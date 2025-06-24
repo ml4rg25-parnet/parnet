@@ -9,14 +9,14 @@ from .utils import sequence_to_onehot
 
 
 def load_parnet_model_for_prediction(
-    model_weigth_path: os.PathLike,
+    model_weight_path: os.PathLike,
     device: torch.device,
     dtype: torch.dtype,
     is_old_model: bool = False,
 ) -> RBPNet:
     """Load a parnet model for prediction."""
     model = torch.load(
-        model_weigth_path,
+        model_weight_path,
         map_location=device,
         weights_only=False,
     ).to(dtype)
